@@ -1,8 +1,13 @@
+### Bot Task:
 This bot searches through new submissions and comments on selected subreddits and when it finds an instagram link it then replies with a mirror of the instagram post(s).
 
 ### Examples:
 ![](http://i.imgur.com/Lb0DR7Y.png?1 "single link")
 ![](http://i.imgur.com/lQyCSm9.png "single link opened")
+=======================
+![](http://i.imgur.com/5hfb8L8.png "multiple links")
+![](http://i.imgur.com/mNiwXJ7.png "multiple links opened")
+
 
 ###Hosting:
 This bot is hosted on Heroku, hence the requirements.txt, Procfile, and storing the tokens and client details as environment variables.
@@ -10,7 +15,10 @@ This bot is hosted on Heroku, hence the requirements.txt, Procfile, and storing 
 	
 ###Dependencies:
 beautifulsoup (bs4)
+
 imgurpython
+
 praw
+
 prawoauth2
 

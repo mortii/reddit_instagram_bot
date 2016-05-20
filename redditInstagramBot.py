@@ -22,7 +22,6 @@ checked_comments = set()
 
 
 def main():
-	counter = 1
 	while True:
 		try:
 			for subreddit_name in subreddits:
@@ -111,7 +110,7 @@ def mirror_comments(subreddit_name):
 
 def empty_sets_if_big():
 	global checked_comments, checked_submissions
-	
+
 	if len(checked_comments) > 10000:
    		checked_comments = set()
    	if len(checked_submissions)  > 10000:

@@ -1,0 +1,11 @@
+*.pyc
+secrets.py
+*.conf
+*.conf~
+*.txt
+*.log
+.gitignore~
+test.py
+!requirements.txt
+.cache/
+

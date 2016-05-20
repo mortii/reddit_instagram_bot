@@ -92,7 +92,6 @@ def create_comment(insta_links):
 
 	if len(total_comment) >= 10000:
 		total_comment = comment_length_error + footer
-		
 	return total_comment
 
 def mirror_comments(subreddit_name):

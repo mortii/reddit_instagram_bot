@@ -5,18 +5,30 @@ from instagramScraper import Instagram
 import re
 from time import sleep
 import urllib2 as urllib
+# from secrets
+
 
 user_agent = os.environ['user_agent']
 app_key = os.environ['app_key']
 app_secret = os.environ['app_secret']
 access_token = os.environ['access_token']
 refresh_token = os.environ['refresh_token']
+
+
+print "user_agent:", user_agent
+print "app_key:", app_key
+print "access_token:", access_token
+print "refresh_token:", refresh_token 
+
 scopes = os.environ['scopes']
 reddit_client = praw.Reddit(user_agent=user_agent)
 oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key,
                                app_secret=app_secret,
                                access_token=access_token,
                                refresh_token=refresh_token, scopes=scopes)
+
+print "reddit_client:", reddit_client
+print "oauth_helper:", oauth_helper
 
 checked_submissions = set()
 checked_comments = set()

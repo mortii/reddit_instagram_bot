@@ -23,7 +23,8 @@ checked_comments = set()
 subreddits = ['test', 'MMA', 'bodybuilding']
 reg = re.compile(r'https://www.instagram.com/p/[\w\-]{10,11}/')
 footer = ("^I ^am ^bot. ^For ^bugs/suggestions/feedback [^[Message ^Creator]]" 
-	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=instaMMA)")
+	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=instaMMA)"
+	"[^[Source ^Code]](https://github.com/mortii/reddit_instagram_bot)")
 comment_length_error = ("Sorry, caption(s) too long for a reddit comment."
 			"(If you think this is a bug let me know)\n\n***\n\n")
 

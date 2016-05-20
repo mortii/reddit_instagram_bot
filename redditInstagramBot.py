@@ -13,14 +13,16 @@ app_key = os.environ['app_key']
 app_secret = os.environ['app_secret']
 access_token = os.environ['access_token']
 refresh_token = os.environ['refresh_token']
+scopes = os.environ['scopes']
 
 
 print "user_agent:", user_agent
 print "app_key:", app_key
 print "access_token:", access_token
 print "refresh_token:", refresh_token 
+print "scopes:", scopes 
 
-scopes = os.environ['scopes']
+
 reddit_client = praw.Reddit(user_agent=user_agent)
 oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key,
                                app_secret=app_secret,

@@ -22,7 +22,7 @@ checked_comments = set()
 
 
 def main():
-	while True:
+		while True:
 		try:
 			for subreddit_name in subreddits:
 				mirror_submissions(subreddit_name)
@@ -89,7 +89,6 @@ def create_comment(insta_links):
 	total_comment += footer
 
 	if len(total_comment) >= 10000:
-		print text
 		error_message = "Sorry, caption(s) too long for a reddit comment. (If you think this is a bug let me know)\n\n***\n\n"
 		total_comment = error_message + footer
 		sleep(100)
@@ -98,6 +97,7 @@ def create_comment(insta_links):
 
 def mirror_comments(subreddit_name):
 	global checked_comments
+	
 	for comment in reddit_client.get_comments(subreddit_name):
 		if comment.id not in checked_comments and comment.author.name != 'InstagramMirror':
 			insta_links = get_insta_links(comment.body)

@@ -24,8 +24,6 @@ checked_comments = set()
 def main():
 	counter = 1
 	while True:
-		print "counter:", counter
-		counter += 1
 		try:
 			for subreddit_name in subreddits:
 				mirror_submissions(subreddit_name)
@@ -39,7 +37,6 @@ def main():
 		           sleep(error.sleep_time)
 
 		empty_sets_if_big()
-		print "sleep"
 		sleep(30)
 
 def mirror_submissions(subreddit_name):
@@ -59,6 +56,7 @@ def get_insta_links(text):
 	insta_links = set(reg.findall(text)) 
 	insta_links = filter_dead_links(insta_links)
 
+	#limit links to 5 (5 is an arbitrary number, it could be much higher)
 	if len(insta_links) > 5:
 		return []
 	return insta_links
@@ -113,6 +111,7 @@ def mirror_comments(subreddit_name):
 
 def empty_sets_if_big():
 	global checked_comments, checked_submissions
+	
 	if len(checked_comments) > 10000:
    		checked_comments = set()
    	if len(checked_submissions)  > 10000:

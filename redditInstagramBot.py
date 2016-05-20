@@ -28,7 +28,6 @@ comment_length_error = ("Sorry, caption(s) too long for a reddit comment."
 			"(If you think this is a bug let me know)\n\n***\n\n")
 
 def main():
-	oauth_helper.refresh() 
 	while True:
 		try:
 			for subreddit_name in subreddits:

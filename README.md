@@ -2,8 +2,10 @@
 This bot searches through new submissions and comments for instagram links in selected subreddits. When an instagram link is found the bot then replies with a mirror of the instagram post(s).
 
 ### Examples:
-![](http://i.imgur.com/Lb0DR7Y.png?1 "single link")
-![](http://i.imgur.com/lQyCSm9.png "single link opened")
+![](http://i.imgur.com/MAjsI1P.png "single link")
+![](http://i.imgur.com/UXojmXq.png "single link opened")
+
+***
 
 ![](http://i.imgur.com/wiOnWeV.png "multiple links")
 ![](http://i.imgur.com/mNiwXJ7.png "multiple links opened") 67%

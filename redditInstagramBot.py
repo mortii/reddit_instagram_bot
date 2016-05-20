@@ -12,16 +12,6 @@ app_secret = os.environ['app_secret']
 access_token = os.environ['access_token']
 refresh_token = os.environ['refresh_token']
 scopes = os.environ['scopes']
-
-
-print user_agent
-print app_key
-print app_secret
-print access_token
-print refresh_token
-print scopes
-
-
 reddit_client = praw.Reddit(user_agent=user_agent)
 oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key,
                                app_secret=app_secret,
@@ -39,6 +29,7 @@ comment_length_error = ("Sorry, caption(s) too long for a reddit comment."
 			"(If you think this is a bug let me know)\n\n***\n\n")
 
 def main():
+	oauth_helper.refresh() 
 	while True:
 		try:
 			for subreddit_name in subreddits:

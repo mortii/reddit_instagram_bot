@@ -1,6 +1,8 @@
+import os
 from imgurpython import ImgurClient
-from secrets import client_id, client_secret
 
+client_id = os.environ['client_id']
+client_secret = os.environ['client_secret']
 client = ImgurClient(client_id, client_secret)
 
 def upload_picture(pic_url):

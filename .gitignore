@@ -11,3 +11,5 @@ test.py
 Procfile~
 venv
 .env
+.env~
+

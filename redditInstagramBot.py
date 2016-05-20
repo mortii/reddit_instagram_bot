@@ -1,12 +1,17 @@
+import os
 import praw
 from prawoauth2 import PrawOAuth2Mini
 from instagramScraper import Instagram
 import re
 from time import sleep
 import urllib2 as urllib
-from secrets import (user_agent, app_key, app_secret, access_token,
-			refresh_token, refresh_token, scopes)
 
+user_agent = os.environ['user_agent']
+app_key = os.environ['app_key']
+app_secret = os.environ['app_secret']
+access_token = os.environ['access_token']
+refresh_token = os.environ['refresh_token']
+scopes = os.environ['scopes']
 reddit_client = praw.Reddit(user_agent=user_agent)
 oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key,
                                app_secret=app_secret,

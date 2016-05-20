@@ -5,7 +5,7 @@ This bot searches through new submissions and comments for instagram links in se
 ![](http://i.imgur.com/Lb0DR7Y.png?1 "single link")
 ![](http://i.imgur.com/lQyCSm9.png "single link opened")
 
-![]([Imgur](http://i.imgur.com/wiOnWeV.png) "multiple links")
+![](http://i.imgur.com/wiOnWeV.png "multiple links")
 ![](http://i.imgur.com/mNiwXJ7.png "multiple links opened") 67%
 
 

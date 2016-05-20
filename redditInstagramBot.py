@@ -7,22 +7,24 @@ import urllib2 as urllib
 from secrets import (user_agent, app_key, app_secret, access_token,
 			refresh_token, refresh_token, scopes)
 
-
 reddit_client = praw.Reddit(user_agent=user_agent)
 oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key,
                                app_secret=app_secret,
                                access_token=access_token,
                                refresh_token=refresh_token, scopes=scopes)
 
-reg = re.compile(r'https://www.instagram.com/p/[\w\-]{10,11}/')
-footer = """^I ^am ^bot. ^For ^bugs/suggestions/feedback [^[Message ^Creator]](https://np.reddit.com/message/compose/?to=bestme&amp;subject=instaMMA) ^(*bot currently being tested*)"""
-subreddits = ['test', 'MMA']
 checked_submissions = set()
 checked_comments = set()
-
+subreddits = ['test']
+reg = re.compile(r'https://www.instagram.com/p/[\w\-]{10,11}/')
+footer = ("^I ^am ^bot. ^For ^bugs/suggestions/feedback [^[Message ^Creator]]" 
+	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=instaMMA)"
+	" ^(*bot currently being tested*)")
+comment_length_error = ("Sorry, caption(s) too long for a reddit comment."
+			"(If you think this is a bug let me know)\n\n***\n\n")
 
 def main():
-		while True:
+	while True:
 		try:
 			for subreddit_name in subreddits:
 				mirror_submissions(subreddit_name)
@@ -89,15 +91,14 @@ def create_comment(insta_links):
 	total_comment += footer
 
 	if len(total_comment) >= 10000:
-		error_message = "Sorry, caption(s) too long for a reddit comment. (If you think this is a bug let me know)\n\n***\n\n"
-		total_comment = error_message + footer
+		total_comment = comment_length_error + footer
 		sleep(100)
 		
 	return total_comment
 
 def mirror_comments(subreddit_name):
 	global checked_comments
-	
+
 	for comment in reddit_client.get_comments(subreddit_name):
 		if comment.id not in checked_comments and comment.author.name != 'InstagramMirror':
 			insta_links = get_insta_links(comment.body)

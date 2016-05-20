@@ -20,11 +20,10 @@ oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key,
 
 checked_submissions = set()
 checked_comments = set()
-subreddits = ['test', 'MMA']
+subreddits = ['test', 'MMA', 'bodybuilding']
 reg = re.compile(r'https://www.instagram.com/p/[\w\-]{10,11}/')
 footer = ("^I ^am ^bot. ^For ^bugs/suggestions/feedback [^[Message ^Creator]]" 
-	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=instaMMA)"
-	" ^(*bot currently being tested*)")
+	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=instaMMA)")
 comment_length_error = ("Sorry, caption(s) too long for a reddit comment."
 			"(If you think this is a bug let me know)\n\n***\n\n")
 

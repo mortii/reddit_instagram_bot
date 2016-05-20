@@ -8,4 +8,5 @@ secrets.py
 test.py
 !requirements.txt
 .cache/
-
+Procfile~
+venv

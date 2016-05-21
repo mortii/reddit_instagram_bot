@@ -2,13 +2,13 @@
 This bot searches through new submissions and comments for instagram links in selected subreddits. When instagram links are found the bot then replies with a mirror of the instagram post(s).
 
 ### Examples:
+<p align="center">**(Closed)**</p>
+
 <p align="center">
   <img src="http://i.imgur.com/MAjsI1P.png"/>
 </p>
 
-<p align="center">
-  <img src="http://iconizer.net/files/IconSweets/orig/arrow_down.png"/>
-</p>
+<p align="center">**(Opened)**</p>
 
 <p align="center">
   <img src="http://i.imgur.com/UXojmXq.png"/>

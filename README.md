@@ -1,5 +1,5 @@
 ## Bot Task:
-This bot searches through new submissions and comments for instagram links in selected subreddits. When an instagram link is found the bot then replies with a mirror of the instagram post(s).
+This bot searches through new submissions and comments for instagram links in selected subreddits. When instagram links are found the bot then replies with a mirror of the instagram post(s).
 
 ### Examples:
 <p align="center">

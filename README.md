@@ -5,6 +5,7 @@ This bot searches through new submissions and comments for instagram links in se
 ![](http://i.imgur.com/MAjsI1P.png "single link")
 
 ![](http://iconizer.net/files/IconSweets/orig/arrow_down.png "")
+
 ![](http://i.imgur.com/UXojmXq.png "single link opened")
 
 ***
@@ -12,6 +13,7 @@ This bot searches through new submissions and comments for instagram links in se
 ![](http://i.imgur.com/wiOnWeV.png "multiple links")
 
 ![](http://iconizer.net/files/IconSweets/orig/arrow_down.png "")
+
 ![](http://i.imgur.com/mNiwXJ7.png "multiple links opened")
 
 

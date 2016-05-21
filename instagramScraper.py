@@ -73,7 +73,8 @@ class Instagram:
 		return text[begin : end]
 
 	def clean_text(self, rough_text):
-		text = re.sub(r'\\n', r'\n\n>', rough_text)
+		text = re.sub(r'\\n#', r'\n\n>\#', rough_text)
+		text = re.sub(r'\\n', r'\n\n>', text)
 		text = re.sub(r'\\"', r'"', text)
 		text = text.decode('unicode-escape')
 		return text

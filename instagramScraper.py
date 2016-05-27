@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import json
 import urllib2 as urllib
 import re
 import unicodedata
@@ -11,7 +12,7 @@ class Instagram:
 		soup = BeautifulSoup(url_reader, 'html.parser')
 		self.user = self.get_user(soup)
 		self.title, self.time = self.get_title_and_time(soup)
-		self.text = self.get_text(soup)
+		self.caption = self.get_caption(soup)
 		self.url = url
 		self.vid_url = self.get_vid_url(soup)
 		self.pic_url = self.get_pic_url(soup)
@@ -58,26 +59,34 @@ class Instagram:
 		time = text[time_start:]
 		return title, time
 
-	def get_text(self, soup):
-		for raw_text in soup.find_all(text=re.compile(r'\"caption\"')):
-			rough_text = self.slice_text(raw_text)
-			text = self.clean_text(rough_text)
-			return text
-		return ""
+	def get_caption(self, soup):
+		all_text = str(soup)
+		window_text = self.slice_text(all_text)
+		rough_caption = self.get_json_caption(window_text)
+		caption = self.clean_caption(rough_caption)
+		return caption
 		
-	def slice_text(self, text):
-		reg = re.search(r'\",\s\"caption\":\s\"', text)
-		begin =  reg.start() + 15
-		reg = re.search(r'\",\s\"likes\":\s{', text)
-		end = reg.start()
-		return text[begin : end]
+	def slice_text(self, all_text):
+		reg_start = re.search(r'<script type="text/javascript">window._sharedData', all_text)
+		reg_end = re.search(r'};</script>', all_text)
+		begin =  reg_start.start() + 52
+		end = reg_end.start() + 1
+		window_text = all_text[begin : end]
+		return window_text	
 
-	def clean_text(self, rough_text):
-		text = re.sub(r'#', r'\#', rough_text)
-		text = re.sub(r'\\n', r'\n\n>', text)
-		text = re.sub(r'\\"', r'"', text)
-		text = text.decode('unicode-escape')
-		return text
+	def get_json_caption(self, window_text):
+		window_text = json.loads(window_text)
+		for post in window_text['entry_data']['PostPage']:
+			try:
+				return post['media']['caption']
+			except:
+				return ""
+
+	def clean_caption(self, rough_caption):
+		caption = re.sub(r'#', r'\#', rough_caption)
+		caption = re.sub(r'\n', r'\n\n>', caption)
+		caption = re.sub(r'\"', r'"', caption)
+		return caption
 
 	def get_pic_url(self, soup):
 		tag = soup.findAll("meta", {"content" : re.compile(r'.jpg?')})

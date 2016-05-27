@@ -91,8 +91,8 @@ def create_comment(insta_links):
 		header = '[**%s(%s):**](%s)' % (insta.title, insta.user, insta.url)
 		time = '\n\n>^(%s)' % insta.time
 		media_mirror = "\n\n>[[%s Mirror]](%s)" % (insta.media, insta.mirror_url)
-		text = '\n\n>%s\n\n***\n\n' % insta.text
-		total_comment += header + time + media_mirror + text
+		caption = '\n\n>%s\n\n***\n\n' % insta.caption
+		total_comment += header + time + media_mirror + caption
 	total_comment += footer
 
 	if len(total_comment) >= 10000:

@@ -43,7 +43,7 @@ def main():
 		           sleep(error.sleep_time)
 
 		empty_sets_if_big()
-		sleep(30)
+		sleep(15)
 
 def mirror_submissions(subreddit_name):
 	global checked_submissions

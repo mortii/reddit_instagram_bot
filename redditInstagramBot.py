@@ -21,7 +21,7 @@ oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key,
 checked_submissions = set()
 checked_comments = set()
 subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
-reg = re.compile(r'https://www.instagram.com/p/[\w\-]{10,11}/')
+reg = re.compile(r'(https://(www.)?instagram.com/p/[\w\-]{10,11}/)')
 footer = ("^I ^am ^bot. ^For ^bugs/suggestions/feedback [^[Message ^Creator]]" 
 	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror)"
 	"[^[Source ^Code]](https://github.com/mortii/reddit_instagram_bot)")
@@ -70,6 +70,7 @@ def get_insta_links(text):
 def filter_dead_links(insta_links):
 	working_links = []
 	for link in insta_links:
+		link = link[0] #first regex group
 		try :
 			url_reader = urllib.urlopen(link)
 			working_links.append(link)

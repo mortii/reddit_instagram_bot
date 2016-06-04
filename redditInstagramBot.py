@@ -22,11 +22,14 @@ checked_submissions = set()
 checked_comments = set()
 subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
 reg = re.compile(r'(https://(www.)?instagram.com/p/[\w\-]{10,11}/)')
-footer = ("^I ^am ^bot. ^For ^bugs/suggestions/feedback [^[Message ^Creator]]" 
-	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror)"
+footer = ("^I'm ^a ^bot. [^[Report ^Bug]]"
+	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20bug)"
+	"[^[Give ^Feedback ^or ^Suggestions]]"
+	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20feedback/suggestion)"
 	"[^[Source ^Code]](https://github.com/mortii/reddit_instagram_bot)")
 comment_length_error = ("Sorry, caption(s) too long for a reddit comment."
 			"(If you think this is a bug let me know)\n\n***\n\n")
+
 
 def main():
 	while True:

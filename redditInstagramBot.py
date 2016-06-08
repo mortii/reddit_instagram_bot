@@ -6,6 +6,7 @@ import re
 from time import sleep
 import urllib2 as urllib
 
+
 user_agent = os.environ['user_agent']
 app_key = os.environ['app_key']
 app_secret = os.environ['app_secret']
@@ -18,8 +19,8 @@ oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key, app_secret=app_sec
 
 checked_submissions = set()
 checked_comments = set()
-subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
 regex = re.compile(r'(https://(www.)?instagram.com/p/[\w\-]{10,11}/)')
+subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
 footer = ("^I'm ^a ^bot. [^[Report ^Bug]]"
 	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20bug)"
 	"[^[Give ^Feedback ^or ^Suggestions]]"

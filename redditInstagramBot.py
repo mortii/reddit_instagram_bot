@@ -13,15 +13,13 @@ access_token = os.environ['access_token']
 refresh_token = os.environ['refresh_token']
 scopes = os.environ['scopes']
 reddit_client = praw.Reddit(user_agent=user_agent)
-oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key,
-                               app_secret=app_secret,
-                               access_token=access_token,
-                               refresh_token=refresh_token, scopes=scopes)
+oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key, app_secret=app_secret,
+			 access_token=access_token, refresh_token=refresh_token, scopes=scopes)
 
 checked_submissions = set()
 checked_comments = set()
 subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
-reg = re.compile(r'(https://(www.)?instagram.com/p/[\w\-]{10,11}/)')
+regex = re.compile(r'(https://(www.)?instagram.com/p/[\w\-]{10,11}/)')
 footer = ("^I'm ^a ^bot. [^[Report ^Bug]]"
 	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20bug)"
 	"[^[Give ^Feedback ^or ^Suggestions]]"
@@ -48,6 +46,7 @@ def main():
 		empty_sets_if_big()
 		sleep(15)
 
+
 def mirror_submissions(subreddit_name):
 	global checked_submissions
 	subreddit = reddit_client.get_subreddit(subreddit_name)
@@ -60,15 +59,17 @@ def mirror_submissions(subreddit_name):
 					bot_comment = create_comment(insta_links)
 					print submission.add_comment(bot_comment)
 			checked_submissions.add(submission.id)
+
 			
 def get_insta_links(text):
-	insta_links = set(reg.findall(text)) 
+	insta_links = set(regex.findall(text)) 
 	insta_links = filter_dead_links(insta_links)
 
 	#limit links to 5 (5 is an arbitrary number, it could be much higher)
 	if len(insta_links) > 5:
 		return []
 	return insta_links
+
 	
 def filter_dead_links(insta_links):
 	working_links = []
@@ -81,12 +82,14 @@ def filter_dead_links(insta_links):
 			pass
 	return working_links
 
+
 def already_replied(replies):
 	for comment in replies:
 		if comment.author != None:
 			if comment.author.name == "InstagramMirror":
 				return True
 	return False
+
 
 def create_comment(insta_links):
 	total_comment = "" 
@@ -103,6 +106,7 @@ def create_comment(insta_links):
 		total_comment = comment_length_error + footer
 	return total_comment
 
+
 def mirror_comments(subreddit_name):
 	global checked_comments
 
@@ -116,6 +120,7 @@ def mirror_comments(subreddit_name):
 					print comment.reply(bot_comment)
 			checked_comments.add(comment.id)
 
+
 def empty_sets_if_big():
 	global checked_comments, checked_submissions
 
@@ -123,6 +128,7 @@ def empty_sets_if_big():
    		checked_comments = set()
    	if len(checked_submissions)  > 10000:
    		checked_submissions = set()
+
 
 if __name__ == '__main__':
 	main()

@@ -6,6 +6,7 @@ import unicodedata
 import streamableApi
 import imgurApi
 
+
 class Instagram:
 	def __init__(self, url):
 		url_reader = urllib.urlopen(url)
@@ -23,6 +24,7 @@ class Instagram:
 		else:
 			self.media = 'Video'
 			self.mirror_url = streamableApi.upload_vid(self.vid_url)
+
 			
 	def get_user(self, soup):
 		tag = soup.findAll("meta", {"content" : re.compile(r'@')})
@@ -31,12 +33,14 @@ class Instagram:
 			user = self.slice_user(content)
 			return user
 
+
 	def slice_user(self, content):
 		begin = content.find("@")
 		content = content[begin:]
 		end = content.find(" ")
 		user = content[:end]
 		return user
+
 
 	def get_title_and_time(self, soup):
 		tag = soup.findAll("meta", {"content" : re.compile(r'.UTC')})
@@ -46,11 +50,13 @@ class Instagram:
 			title, time = self.slice_title_and_time(content)
 			return title, time
 
+
 	def remove_default_name(self, content):
 		has_default_name = content.find('by @')
 		if has_default_name != -1:
 			content = content.replace("by @", "by ")
 		return content
+
 
 	def slice_title_and_time(self, text):
 		reg = re.search(r'[a-zA-Z]+\s[\d]+,\s20[\d]{2}\sat\s[\d:pmam]+\sUTC', text)
@@ -59,12 +65,14 @@ class Instagram:
 		time = text[time_start:]
 		return title, time
 
+
 	def get_caption(self, soup):
 		all_text = str(soup)
 		window_text = self.slice_text(all_text)
 		rough_caption = self.get_json_caption(window_text)
 		caption = self.clean_caption(rough_caption)
 		return caption
+
 		
 	def slice_text(self, all_text):
 		reg_start = re.search(r'<script type="text/javascript">window._sharedData', all_text)
@@ -74,6 +82,7 @@ class Instagram:
 		window_text = all_text[begin : end]
 		return window_text	
 
+
 	def get_json_caption(self, window_text):
 		window_text = json.loads(window_text)
 		for post in window_text['entry_data']['PostPage']:
@@ -82,16 +91,19 @@ class Instagram:
 			except:
 				return ""
 
+
 	def clean_caption(self, rough_caption):
 		caption = re.sub(r'#', r'\#', rough_caption)
 		caption = re.sub(r'\n', r'\n\n>', caption)
 		caption = re.sub(r'\"', r'"', caption)
 		return caption
 
+
 	def get_pic_url(self, soup):
 		tag = soup.findAll("meta", {"content" : re.compile(r'.jpg?')})
 		for pic_url in tag:
 			return pic_url.get("content")
+
 
 	def get_vid_url(self, soup):
 		tag = soup.findAll("meta", {"content" : re.compile(r'.mp4')})

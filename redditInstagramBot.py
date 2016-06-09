@@ -86,9 +86,15 @@ def filter_dead_links(insta_links):
 
 def already_replied(replies):
 	for comment in replies:
-		if comment.author != None:
-			if comment.author.name == "InstagramMirror":
-				return True
+		if author_is_bot(comment):
+			return True
+	return False
+
+
+def author_is_bot(comment):
+	if comment.author != None:
+		if comment.author.name == "InstagramMirror":
+			return True
 	return False
 
 
@@ -112,7 +118,7 @@ def mirror_comments(subreddit_name):
 	global checked_comments
 
 	for comment in reddit_client.get_comments(subreddit_name):
-		if comment.id not in checked_comments and comment.author.name != 'InstagramMirror':
+		if comment.id not in checked_comments and not author_is_bot(comment):
 			insta_links = get_insta_links(comment.body)
 			if len(insta_links) > 0:
 				comment.refresh() #have to refresh due to redditAPI bug causing empty replies list

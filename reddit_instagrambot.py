@@ -3,7 +3,7 @@ import praw
 import re
 import urllib2 as urllib
 import requests
-import redditComment
+import reddit_comment
 from prawoauth2 import PrawOAuth2Mini
 from time import sleep
 
@@ -56,7 +56,7 @@ def mirror_submissions(subreddit_name):
 			insta_links = get_insta_links(submission.url)
 			if len(insta_links) > 0:
 				if not already_replied(submission.comments):
-					bot_comment = redditComment.create_comment(insta_links)
+					bot_comment = reddit_comment.create_comment(insta_links)
 					print submission.add_comment(bot_comment)
 			checked_submissions.add(submission.id)
 
@@ -106,7 +106,7 @@ def mirror_comments(subreddit_name):
 			if len(insta_links) > 0:
 				comment.refresh() #have to refresh due to redditAPI bug causing empty replies list
 				if not already_replied(comment.replies):
-					bot_comment = redditComment.create_comment(insta_links)
+					bot_comment = reddit_comment.create_comment(insta_links)
 					print comment.reply(bot_comment)
 			checked_comments.add(comment.id)
 

@@ -1,1 +1,1 @@
-worker: python redditInstagramBot.py
+worker: python reddit_instagrambot.py

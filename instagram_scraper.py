@@ -3,11 +3,11 @@ import json
 import urllib2 as urllib
 import re
 import unicodedata
-import streamableApi
-import imgurApi
+import streamable
+import imgur
 
 
-class Instagram:
+class InstaPost:
 	def __init__(self, url):
 		url_reader = urllib.urlopen(url)
 		soup = BeautifulSoup(url_reader, 'html.parser')
@@ -20,10 +20,10 @@ class Instagram:
 
 		if self.vid_url == None:
 			self.media = 'Image'
-			self.mirror_url = imgurApi.upload_picture(self.pic_url)
+			self.mirror_url = imgur.upload_picture(self.pic_url)
 		else:
 			self.media = 'Video'
-			self.mirror_url = streamableApi.upload_vid(self.vid_url)
+			self.mirror_url = streamable.upload_vid(self.vid_url)
 
 			
 	def get_user(self, soup):

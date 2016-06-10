@@ -1,4 +1,4 @@
-from instagramScraper import Instagram
+from instagram_scraper import InstaPost
 
 
 comment_footer = ("^I'm ^a ^bot. [^[Report ^Bug]]"
@@ -21,7 +21,7 @@ def create_comment(insta_links):
 
 
 def insta_post(link):
-	insta = Instagram(link)
+	insta = InstaPost(link)
 	header = '[**%s(%s):**](%s)' % (insta.title, insta.user, insta.url)
 	time = '\n\n>^(%s)' % insta.time
 	media_mirror = "\n\n>[[%s Mirror]](%s)" % (insta.media, insta.mirror_url)

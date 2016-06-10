@@ -5,6 +5,7 @@ from instagramScraper import Instagram
 import re
 from time import sleep
 import urllib2 as urllib
+import requests
 
 
 user_agent = os.environ['user_agent']
@@ -43,6 +44,10 @@ def main():
 		except praw.errors.RateLimitExceeded as error:
 		           print 'Exceeded commenting limit, have to sleep for %d seconds' % error.sleep_time
 		           sleep(error.sleep_time)
+
+		except requests.exceptions.ReadTimeout:
+		 	print "Read timeout"
+		 	sleep(15)
 
 		empty_sets_if_big()
 		sleep(15)

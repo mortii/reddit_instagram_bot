@@ -1,19 +1,20 @@
 import os
 import praw
-from prawoauth2 import PrawOAuth2Mini
-from instagramScraper import Instagram
 import re
-from time import sleep
 import urllib2 as urllib
 import requests
+import redditComment
+from prawoauth2 import PrawOAuth2Mini
+from time import sleep
 
-
+#secret variables stored on Heroku
 user_agent = os.environ['user_agent']
 app_key = os.environ['app_key']
 app_secret = os.environ['app_secret']
 access_token = os.environ['access_token']
 refresh_token = os.environ['refresh_token']
 scopes = os.environ['scopes']
+
 reddit_client = praw.Reddit(user_agent=user_agent)
 oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key, app_secret=app_secret,
 			 access_token=access_token, refresh_token=refresh_token, scopes=scopes)
@@ -22,13 +23,6 @@ checked_submissions = set()
 checked_comments = set()
 regex = re.compile(r'(https://(www.)?instagram.com/p/[\w\-]{10,11}/)')
 subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
-footer = ("^I'm ^a ^bot. [^[Report ^Bug]]"
-	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20bug)"
-	"[^[Give ^Feedback ^or ^Suggestions]]"
-	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20feedback/suggestion)"
-	"[^[Source ^Code]](https://github.com/mortii/reddit_instagram_bot)")
-comment_length_error = ("Sorry, caption(s) too long for a reddit comment."
-			"(If you think this is a bug let me know)\n\n***\n\n")
 
 
 def main():
@@ -39,7 +33,7 @@ def main():
 				mirror_comments(subreddit_name)
 
 		except praw.errors.OAuthInvalidToken:
-			oauth_helper.refresh() 
+			oauth_helper.refresh() #refreshes expired tokens
 
 		except praw.errors.RateLimitExceeded as error:
 		           print 'Exceeded commenting limit, have to sleep for %d seconds' % error.sleep_time
@@ -48,7 +42,6 @@ def main():
 		except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError):
 		 	print "Network problems, will take a short nap"
 		 	sleep(15)
-
 
 		empty_sets_if_big()
 		sleep(15)
@@ -63,7 +56,7 @@ def mirror_submissions(subreddit_name):
 			insta_links = get_insta_links(submission.url)
 			if len(insta_links) > 0:
 				if not already_replied(submission.comments):
-					bot_comment = create_comment(insta_links)
+					bot_comment = redditComment.create_comment(insta_links)
 					print submission.add_comment(bot_comment)
 			checked_submissions.add(submission.id)
 
@@ -81,7 +74,7 @@ def get_insta_links(text):
 def filter_dead_links(insta_links):
 	working_links = []
 	for link in insta_links:
-		link = link[0] #first regex group
+		link = link[0] #first regex group, i.e. excluding the 'www.' since its optional
 		try :
 			url_reader = urllib.urlopen(link)
 			working_links.append(link)
@@ -104,22 +97,6 @@ def author_is_bot(comment):
 	return False
 
 
-def create_comment(insta_links):
-	total_comment = "" 
-	for link in insta_links:
-		insta = Instagram(link)
-		header = '[**%s(%s):**](%s)' % (insta.title, insta.user, insta.url)
-		time = '\n\n>^(%s)' % insta.time
-		media_mirror = "\n\n>[[%s Mirror]](%s)" % (insta.media, insta.mirror_url)
-		caption = '\n\n>%s\n\n***\n\n' % insta.caption
-		total_comment += header + time + media_mirror + caption
-	total_comment += footer
-
-	if len(total_comment) >= 10000:
-		total_comment = comment_length_error + footer
-	return total_comment
-
-
 def mirror_comments(subreddit_name):
 	global checked_comments
 
@@ -129,7 +106,7 @@ def mirror_comments(subreddit_name):
 			if len(insta_links) > 0:
 				comment.refresh() #have to refresh due to redditAPI bug causing empty replies list
 				if not already_replied(comment.replies):
-					bot_comment = create_comment(insta_links)
+					bot_comment = redditComment.create_comment(insta_links)
 					print comment.reply(bot_comment)
 			checked_comments.add(comment.id)
 

@@ -62,7 +62,7 @@ def mirror_submissions(subreddit_name):
 
 			
 def get_insta_links(text):
-	insta_links = set(regex.findall(text)) 
+	insta_links = set(regex.findall(text)) #remove duplicate links by using set
 	insta_links = filter_dead_links(insta_links)
 
 	#limit links to 5 (5 is an arbitrary number, it could be much higher)
@@ -76,10 +76,11 @@ def filter_dead_links(insta_links):
 	for link in insta_links:
 		link = link[0] #first regex group, i.e. excluding the 'www.' since its optional
 		try :
-			url_reader = urllib.urlopen(link)
+			urllib.urlopen(link)
 			working_links.append(link)
 		except:
 			pass
+			
 	return working_links
 
 
@@ -104,7 +105,7 @@ def mirror_comments(subreddit_name):
 		if comment.id not in checked_comments and not author_is_bot(comment):
 			insta_links = get_insta_links(comment.body)
 			if len(insta_links) > 0:
-				comment.refresh() #have to refresh due to redditAPI bug causing empty replies list
+				comment.refresh() #redditAPI returns an empty replies list if not refreshed (bug)
 				if not already_replied(comment.replies):
 					bot_comment = reddit_comment.create_comment(insta_links)
 					print comment.reply(bot_comment)

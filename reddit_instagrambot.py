@@ -39,9 +39,9 @@ def main():
 		           print 'Exceeded commenting limit, have to sleep for %d seconds' % error.sleep_time
 		           sleep(error.sleep_time)
 
-		except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError):
+		except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError, praw.errors.HTTPException):
 		 	print "Network problems, will take a short nap"
-		 	sleep(15)
+		 	sleep(30)
 
 		empty_sets_if_big()
 		sleep(15)

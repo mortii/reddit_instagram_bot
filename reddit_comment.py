@@ -1,11 +1,10 @@
+# -*- coding: utf-8 -*-
 from instagram_scraper import InstaPost
 
 
-comment_footer = ("^I'm ^a ^bot. [^[Report ^Bug]]"
-	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20bug)"
-	"[^[Give ^Feedback ^or ^Suggestions]]"
-	"(https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20feedback/suggestion)"
-	"[^[Source ^Code]](https://github.com/mortii/reddit_instagram_bot)")
+comment_footer = (u"^[Report Bug](https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20bug)"
+	u" ^| ^[Feedback/Suggestions?](https://np.reddit.com/message/compose/?to=bestme&amp;subject=InstagramMirror%20feedback/suggestion)"
+	u" ^| ^[Source Code](https://github.com/mortii/reddit_instagram_bot)")
 
 
 def create_comment(insta_links):

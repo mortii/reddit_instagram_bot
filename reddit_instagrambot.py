@@ -123,15 +123,20 @@ def mirror_comments(subreddit_name):
 
 def forward_messages():
 	unread_messages = reddit_client.get_unread(unset_has_mail=True, update_user=True)
+	receiving_reddit_user = "bestme"
 
 	for msg in unread_messages:
-		if msg.context != "":
-			msg.context = "[context](%s)" % msg.context
-		body = "%s\n\n%s\n\nby /u/%s" % (msg.context, msg.body, msg.author.name)
-		reddit_user = "bestme"
-		reddit_client.send_message(reddit_user, msg.subject, body)
+		body = create_message_body(msg)
+		reddit_client.send_message(receiving_reddit_user, msg.subject, body)
 		msg.mark_as_read()
 		print "forwarded message"
+
+
+def create_message_body(msg):
+	if msg.context != "":
+		msg.context = "[context](%s)" % msg.context
+	body = "%s\n\n%s\n\nby /u/%s" % (msg.context, msg.body, msg.author.name)
+	return body
 
 
 def empty_sets():

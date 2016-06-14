@@ -26,11 +26,21 @@ subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
 
 
 def main():
+	counter = 0
 	while True:
+		counter += 1
+
 		try:
 			for subreddit_name in subreddits:
 				mirror_submissions(subreddit_name)
 				mirror_comments(subreddit_name)
+
+			if counter % 100 == 0:
+				forward_messages()
+
+			if counter == 1500:
+				empty_sets()
+				counter = 0
 
 		except praw.errors.OAuthInvalidToken:
 			oauth_helper.refresh() #refreshes expired tokens
@@ -43,7 +53,6 @@ def main():
 		 	print "Network problems, will take a short nap"
 		 	sleep(30)
 
-		empty_sets_if_big()
 		sleep(15)
 
 
@@ -112,13 +121,23 @@ def mirror_comments(subreddit_name):
 			checked_comments.add(comment.id)
 
 
-def empty_sets_if_big():
-	global checked_comments, checked_submissions
+def forward_messages():
+	unread_messages = reddit_client.get_unread(unset_has_mail=True, update_user=True)
 
-	if len(checked_comments) > 10000:
-   		checked_comments = set()
-   	if len(checked_submissions)  > 10000:
-   		checked_submissions = set()
+	for msg in unread_messages:
+		if msg.context != "":
+			msg.context = "[context](%s)" % msg.context
+		body = "%s\n\n%s\n\nby /u/%s" % (msg.context, msg.body, msg.author.name)
+		reddit_user = "bestme"
+		reddit_client.send_message(reddit_user, msg.subject, body)
+		msg.mark_as_read()
+		print "forwarded message"
+
+
+def empty_sets():
+	global checked_comments, checked_submissions
+	checked_comments = set()
+	checked_submissions = set()
 
 
 if __name__ == '__main__':

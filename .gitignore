@@ -9,6 +9,5 @@ secrets.py
 test.py
 bot_test.py
 venv
-!requirements.txt
 get_tokens.py
-instabot.log
+!requirements.txt

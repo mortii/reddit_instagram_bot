@@ -29,7 +29,7 @@ oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key, app_secret=app_sec
 checked_submissions = set()
 checked_comments = set()
 regex = re.compile(r'(https://(www.)?instagram.com/p/[\w\-]{10,11}/)')
-subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
+subreddits = ['MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
 
 
 def main():

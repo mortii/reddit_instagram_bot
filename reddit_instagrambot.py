@@ -1,4 +1,5 @@
 import os
+import logging
 import praw
 import re
 import urllib2 as urllib
@@ -6,6 +7,12 @@ import requests
 import reddit_comment
 from prawoauth2 import PrawOAuth2Mini
 from time import sleep
+
+
+log_file = 'instabot.log'
+my_log_format = '%(asctime)s %(levelname)s %(message)s'
+my_log_dateformat = '%Y-%m-%d %H:%M:%S'
+logging.basicConfig(filename=log_file, format=my_log_format, level=logging.INFO, datefmt=my_log_dateformat)
 
 #secret variables stored on Heroku
 user_agent = os.environ['user_agent']
@@ -46,11 +53,11 @@ def main():
 			oauth_helper.refresh() #refreshes expired tokens
 
 		except praw.errors.RateLimitExceeded as error:
-		           print 'Exceeded commenting limit, have to sleep for %d seconds' % error.sleep_time
+			logging.warning('Exceeded commenting limit, sleeping for %d seconds' % error.sleep_time)
 		           sleep(error.sleep_time)
 
 		except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError, praw.errors.HTTPException):
-		 	print "Network problems, will take a short nap"
+		 	logging.warning('Network problems, will take a short nap')
 		 	sleep(30)
 
 		sleep(15)
@@ -66,7 +73,8 @@ def mirror_submissions(subreddit_name):
 			if len(insta_links) > 0:
 				if not already_replied(submission.comments):
 					bot_comment = reddit_comment.create_comment(insta_links)
-					print submission.add_comment(bot_comment)
+					submission.add_comment(bot_comment)
+					logging.info(bot_comment[:50])
 			checked_submissions.add(submission.id)
 
 			
@@ -117,7 +125,8 @@ def mirror_comments(subreddit_name):
 				comment.refresh() #redditAPI returns an empty replies list if not refreshed (bug)
 				if not already_replied(comment.replies):
 					bot_comment = reddit_comment.create_comment(insta_links)
-					print comment.reply(bot_comment)
+					comment.reply(bot_comment)
+					logging.info(bot_comment[:50])
 			checked_comments.add(comment.id)
 
 
@@ -129,7 +138,7 @@ def forward_messages():
 		body = create_message_body(msg)
 		reddit_client.send_message(receiving_reddit_user, msg.subject, body)
 		msg.mark_as_read()
-		print "forwarded message"
+		logging.info('forwarded message') 
 
 
 def create_message_body(msg):
@@ -143,6 +152,7 @@ def empty_sets():
 	global checked_comments, checked_submissions
 	checked_comments = set()
 	checked_submissions = set()
+	logging.info('emptied sets')
 
 
 if __name__ == '__main__':

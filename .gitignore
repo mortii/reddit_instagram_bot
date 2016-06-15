@@ -17,4 +17,4 @@ venv
 !requirements.txt
 get_tokens.py
 get_tokens.py~
-
+instabot.log

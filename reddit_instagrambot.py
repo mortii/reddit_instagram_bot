@@ -10,9 +10,9 @@ from time import sleep
 
 
 log_file = 'instabot.log'
-my_log_format = '%(asctime)s %(levelname)s %(message)s'
-my_log_dateformat = '%Y-%m-%d %H:%M:%S'
-logging.basicConfig(filename=log_file, format=my_log_format, level=logging.INFO, datefmt=my_log_dateformat)
+log_format = '%(asctime)s %(levelname)s %(message)s'
+log_dateformat = '%Y-%m-%d %H:%M:%S'
+logging.basicConfig(filename=log_file, format=log_format, level=logging.INFO, datefmt=log_dateformat)
 
 #secret variables stored on Heroku
 user_agent = os.environ['user_agent']
@@ -54,11 +54,11 @@ def main():
 
 		except praw.errors.RateLimitExceeded as error:
 			logging.warning('Exceeded commenting limit, sleeping for %d seconds' % error.sleep_time)
-		           sleep(error.sleep_time)
+			sleep(error.sleep_time)
 
 		except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError, praw.errors.HTTPException):
-		 	logging.warning('Network problems, will take a short nap')
-		 	sleep(30)
+			logging.warning('Network problems, will take a short nap')
+			sleep(30)
 
 		sleep(15)
 

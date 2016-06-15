@@ -35,7 +35,7 @@ def main():
 				mirror_submissions(subreddit_name)
 				mirror_comments(subreddit_name)
 
-			if counter % 100 == 0:
+			if counter % 50 == 0:
 				forward_messages()
 
 			if counter == 1500:

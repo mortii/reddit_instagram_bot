@@ -7,7 +7,7 @@ import streamable
 import imgur
 
 
-class InstaPost:
+class Instagram:
 	def __init__(self, url):
 		url_reader = urllib.urlopen(url)
 		soup = BeautifulSoup(url_reader, 'html.parser')
@@ -52,6 +52,7 @@ class InstaPost:
 
 
 	def remove_default_name(self, content):
+		#done in order to avoid having '@username' twice in the mirror header
 		has_default_name = content.find('by @')
 		if has_default_name != -1:
 			content = content.replace("by @", "by ")

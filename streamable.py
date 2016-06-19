@@ -1,15 +1,16 @@
 import requests
 
 
-def upload_vid(url):
-	r = requests.get('https://api.streamable.com/import?url=' + url)
-	dic = r.json()
-	shortcode = dic['shortcode']
-	return retrieve_url(shortcode)
+def upload_vid(video_url):
+	response = requests.get('https://api.streamable.com/import?url=' + video_url)
+	dictionary = response.json()
+	shortcode = dictionary['shortcode']
+	streamable_url = get_streamable_url(shortcode) 
+	return streamable_url
 
 
-def retrieve_url(shortcode):
-	link = 'https://api.streamable.com/videos/' + shortcode
-	r = requests.get(link)
-	dic = r.json()
-	return "https://www." + dic['url']
+def get_streamable_url(shortcode):
+	response = requests.get('https://api.streamable.com/videos/' + shortcode)
+	dictionary = response.json()
+	streamable_url = "https://www." + dictionary['url'] 
+	return streamable_url

@@ -57,7 +57,7 @@ class Comment_handler:
 		#when a valid delete request has been made we edit out the content of the comment
 		#and remove the "delete" link from the footer. If we were to delete the comment instead 
 		#of editing it, the bot might just make a brand new mirror. Another advantage of editing over deleting
-		#is that the orignial comment can't be seen by third parties.  
+		#is that the orignial comment can't be found by third parties using various 'undelete' methods.  
 		permalink = praw_comment.permalink
 		footer = _report_bug.format(permalink=permalink) + _feedback + _source_code
 		deleted_comment = "[Deleted by OP's request]\n\n***\n\n" + footer

@@ -62,7 +62,7 @@ class Message_handler:
 	def validate_request(self, body, msg):
 		comment, parent = self.try_to_get_comment_and_parent(body, msg)
 		if comment != None and parent != None:
-			if self.valid_author(parent, msg):
+			if self.valid_request_author(parent, msg):
 				return True, comment
 		return False, None
 
@@ -73,25 +73,27 @@ class Message_handler:
 			if comment.author.name == "InstagramMirror":
 				parent = self.reddit_client.get_info(thing_id=comment.parent_id) 
 				return comment, parent
+			else:
+				return None, None
 		except:
 			return None, None
 
 
-	def valid_author(self, parent, msg):
+	def valid_request_author(self, parent, msg):
 		if parent.author.name != None:
 			if parent.author.name == msg.author.name:
 				return True
 		return False
 
 
-	def reply_with_confirmation(self, user):
+	def reply_with_delete_confirmation(self, user):
 		subject = "deleted"
 		body = "the mirror has been deleted"
 		self.reddit_client.send_message(user, subject, body)
 		self.logger.info("replied with delete confirmation")
 
 
-	def reply_with_denial(self, user):
+	def reply_with_delete_denial(self, user):
 		subject = "denied"
 		body = "only the user of the original post can request mirror deletion"
 		self.reddit_client.send_message(user, subject, body)
@@ -101,5 +103,5 @@ class Message_handler:
 	def mark_messages_as_read(self):
 		for msg in self.unread:
 			msg.mark_as_read()
-			self.unread = []
+		self.unread = []
 		self.logger.info("messages marked as read")

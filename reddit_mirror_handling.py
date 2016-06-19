@@ -28,7 +28,7 @@ class Mirror_handler:
 		insta_links = set(self.regex_instagram.findall(text)) #remove duplicate links by using set
 		insta_links = self.filter_dead_links(insta_links)
 
-		#limit links to 5 to avoid huge comments
+		#limit links to 5 in order to avoid huge comments
 		if len(insta_links) > 5:
 			return []
 		return insta_links
@@ -74,9 +74,9 @@ class Mirror_handler:
 
 	def empty_checked_comments(self):
 		self.checked_comments = set()
-		logging.info('emptied checked_comments')	
+		self.logger.info('emptied checked_comments')	
 
 
 	def empty_checked_submissions(self):
 		self.checked_submissions = set()
-		logging.info('emptied checked_submissions')	
+		self.logger.info('emptied checked_submissions')

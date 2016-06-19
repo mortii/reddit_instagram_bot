@@ -35,17 +35,17 @@ def main():
 				mirror_handler.mirror_submissions(subreddit_name)
 				mirror_handler.mirror_comments(subreddit_name)
 
-			if counter % 2 == 0:
+			if counter % 10 == 0:
 				if message_handler.new_messages():
 					message_handler.forward_messages(user="bestme")
 					message_handler.process_delete_requests()
 
 					for (comment, user) in message_handler.accepted_deletions:
 						comment_handler.delete_comment(comment)
-						message_handler.reply_with_confirmation(user)
+						message_handler.reply_with_delete_confirmation(user)
 
 					for user in message_handler.denied_deletions:
-						message_handler.reply_with_denial(user)
+						message_handler.reply_with_delete_denial(user)
 
 					message_handler.mark_messages_as_read()
 

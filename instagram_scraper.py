@@ -23,7 +23,7 @@ class Instagram:
 			self.mirror_url = imgur.upload_picture(self.pic_url)
 		else:
 			self.media = 'Video'
-			self.mirror_url = streamable.upload_vid(self.vid_url)
+			self.mirror_url = streamable.upload_video(self.vid_url)
 
 			
 	def get_user(self, soup):

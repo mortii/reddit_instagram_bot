@@ -1,7 +1,7 @@
 import requests
 
 
-def upload_vid(video_url):
+def upload_video(video_url):
 	response = requests.get('https://api.streamable.com/import?url=' + video_url)
 	dictionary = response.json()
 	shortcode = dictionary['shortcode']

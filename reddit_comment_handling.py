@@ -43,9 +43,9 @@ class Comment_handler:
 
 
 	def update_footer(self, praw_comment, body, footer):
-		#in order to make an automated deletion process and to make debugging easier
-		#we add in the comment permalink and id to the footer, this can only be done 
-		#by editing the comment after it is posted.
+		#The comment permalink and id is added to the footer to allow for an
+		#automated comment deletion process and to make debugging easier.
+		#This can only be done by editing the comment after it is posted.
 		permalink = praw_comment.permalink
 		thing_id = praw_comment.name
 		comment = body + footer.format(permalink=permalink, thing_id=thing_id)
@@ -54,10 +54,12 @@ class Comment_handler:
 
 
 	def delete_comment(self, praw_comment):
-		#when a valid delete request has been made we edit out the content of the comment
-		#and remove the "delete" link from the footer. If we were to delete the comment instead 
-		#of editing it, the bot might just make a brand new mirror. Another advantage of editing over deleting
-		#is that the orignial comment can't be found by third parties using various 'undelete' methods.  
+		#Once a valid delete request has been received the content of the comment
+		#will be edited out and the 'delete' link will be removed from the footer.
+		#Edit is used in place of delete because the bot might then have created a new mirror
+		#in place of the deleted one. Another advantage editing has over deleting
+		#is that the orignial comment can't be found/seen by third parties using various
+		#'undelete' methods.  
 		permalink = praw_comment.permalink
 		footer = _report_bug.format(permalink=permalink) + _feedback + _source_code
 		deleted_comment = "[Deleted by OP's request]\n\n***\n\n" + footer

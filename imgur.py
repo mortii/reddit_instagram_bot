@@ -1,11 +1,13 @@
 import os
 from imgurpython import ImgurClient
 
+
 client_id = os.environ['client_id']
 client_secret = os.environ['client_secret']
-client = ImgurClient(client_id, client_secret)
+imgur_client = ImgurClient(client_id, client_secret)
 
 
-def upload_picture(pic_url):
-	dic = client.upload_from_url(pic_url, config=None, anon=False)
-	return dic["link"]
+def upload_picture(picture_url):
+	dictionary = imgur_client.upload_from_url(picture_url, config=None, anon=False)
+	imgur_url = dictionary["link"] 
+	return imgur_url

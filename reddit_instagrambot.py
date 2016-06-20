@@ -1,12 +1,19 @@
-import os, logging, logging.config, praw, requests, re as regex
-from reddit_mirror_handling import Mirror_handler
-from reddit_message_handling import Message_handler
-from reddit_comment_handling import Comment_handler
-from prawoauth2 import PrawOAuth2Mini
+import os
+import logging
+import re as regex
 from time import sleep
 
+import praw
+from prawoauth2 import PrawOAuth2Mini
+from requests.exceptions import ReadTimeout, ConnectionError
 
-#secret variables stored on Heroku
+import logging.config
+from reddit_mirror_handling import MirrorHandler
+from reddit_message_handling import MessageHandler
+from reddit_comment_handling import CommentHandler
+
+
+# secret variables stored on Heroku
 user_agent = os.environ['user_agent']
 app_key = os.environ['app_key']
 app_secret = os.environ['app_secret']
@@ -18,11 +25,12 @@ subreddits = ['MMA', 'bodybuilding', 'SquaredCircle', 'spacex', 'powerlifting']
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('root')
 reddit_client = praw.Reddit(user_agent=user_agent)
-comment_handler = Comment_handler(logging)
-message_handler = Message_handler(reddit_client, regex, logging)
-mirror_handler = Mirror_handler(reddit_client, comment_handler, regex, logging)
-oauth_helper = PrawOAuth2Mini(reddit_client, app_key=app_key, app_secret=app_secret,
-			 access_token=access_token, refresh_token=refresh_token, scopes=scopes)
+comment_handler = CommentHandler(logging)
+message_handler = MessageHandler(reddit_client, regex, logging)
+mirror_handler = MirrorHandler(reddit_client, comment_handler, regex, logging)
+oauth_helper = PrawOAuth2Mini(
+	reddit_client, app_key=app_key, app_secret=app_secret,
+	access_token=access_token, refresh_token=refresh_token, scopes=scopes)
 
 
 def main():
@@ -58,11 +66,11 @@ def main():
 			logger.warning('Tokens have expired, need to refresh')
 			oauth_helper.refresh()
 
-		except praw.errors.RateLimitExceeded as error:
-			logger.warning('Exceeded commenting limit, sleeping for %d seconds' % error.sleep_time)
-			sleep(error.sleep_time)
+		except praw.errors.RateLimitExceeded as err:
+			logger.warning('Exceeded commenting limit, sleeping %ds' % err.sleep_time)
+			sleep(err.sleep_time)
 
-		except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError, praw.errors.HTTPException):
+		except (ReadTimeout, ConnectionError, praw.errors.HTTPException):
 			logger.warning('Network problems, will take a short nap')
 			sleep(30)
 

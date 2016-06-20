@@ -3,6 +3,8 @@
 *.txt
 *.log
 *~
+*.sublime-project
+*.sublime-workspace
 .cache/
 .env
 secrets.py

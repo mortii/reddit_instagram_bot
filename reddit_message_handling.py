@@ -1,11 +1,12 @@
 class MessageHandler:
-	def __init__(self, reddit_client, regex, logging):
+	def __init__(self, reddit_client, comment_handler, regex, logging):
 		self._reddit_client = reddit_client
+		self._comment_handler = comment_handler
 		self._regex = regex
 		self._logger = logging.getLogger('messaging')
 		self._unread = []
-		self.accepted_deletions = []
-		self.denied_deletions = []
+		self._accepted_deletions = []
+		self._denied_deletions = []
 
 	def new_messages(self):
 		unread_generator = self._reddit_client.get_unread()
@@ -31,9 +32,19 @@ class MessageHandler:
 		body = "%s\n\n%s\n\nby /u/%s" % (msg.context, msg.body, msg.author.name)
 		return body
 
-	def process_delete_requests(self):
-		self.accepted_deletions = []
-		self.denied_deletions = []
+	def process_deletion_requests(self):
+		self._filter_requests()
+
+		for (comment, user) in self._accepted_deletions:
+			self._comment_handler.delete_comment(comment)
+			self._reply_with_delete_confirmation(user)
+
+		for user in self._denied_deletions:
+			self._reply_with_delete_denial(user)
+
+	def _filter_requests(self):
+		self._accepted_deletions = []
+		self._denied_deletions = []
 
 		for msg in self._unread:
 			body = msg.body.split()
@@ -41,10 +52,10 @@ class MessageHandler:
 				valid, comment = self._validate_request(body, msg)
 				if valid:
 					self._logger.info("valid delete request")
-					self.accepted_deletions.append((comment, msg.author.name))
+					self._accepted_deletions.append((comment, msg.author.name))
 				else:
 					self._logger.info("not valid delete request")
-					self.denied_deletions.append(msg.author.name)
+					self._denied_deletions.append(msg.author.name)
 
 	def _message_is_removal_request(self, body):
 		if body[0] == 'delete' and self._regex.search(r't1_', body[1]):
@@ -77,13 +88,13 @@ class MessageHandler:
 				return True
 		return False
 
-	def reply_with_delete_confirmation(self, user):
+	def _reply_with_delete_confirmation(self, user):
 		subject = "deleted"
 		body = "the mirror has been deleted"
 		self._reddit_client.send_message(user, subject, body)
 		self._logger.info("replied with delete confirmation")
 
-	def reply_with_delete_denial(self, user):
+	def _reply_with_delete_denial(self, user):
 		subject = "denied"
 		body = "only the user of the original post can request mirror deletion"
 		self._reddit_client.send_message(user, subject, body)

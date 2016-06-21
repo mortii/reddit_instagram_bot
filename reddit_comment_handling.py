@@ -63,12 +63,13 @@ class CommentHandler:
 		self._logger.debug("updated footer links")
 
 	def delete_comment(self, praw_comment):
-		# Once a valid delete request has been received the content of the comment
+		# Once a valid deletion request has been received the content of the comment
 		# will be edited out and the 'delete' link will be removed from the footer.
-		# Edit is used in place of delete because the bot might have just created a
-		# new mirror in place of the deleted one. Another advantage editing has over
-		# deleting is that the orignial comment can't be found/seen by third parties
-		# using various 'undelete' methods
+		# Edit is used in place of delete because the bot might create a new mirror
+		# in place of the deleted one after a failure because the bot it only uses
+		# volatile memory, but also checks if it's already replied. Another advantage
+		# editing has over deleting is that the orignial comment can't be found/seen
+		# by third parties using various 'undelete' methods
 		permalink = praw_comment.permalink
 		footer = _report_bug.format(permalink=permalink) + _FEEDBACK + _SOURCE_CODE
 		deleted_comment = "[Deleted by OP's request]\n\n***\n\n" + footer

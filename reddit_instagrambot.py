@@ -26,7 +26,7 @@ logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('root')
 reddit_client = praw.Reddit(user_agent=user_agent)
 comment_handler = CommentHandler(logging)
-message_handler = MessageHandler(reddit_client, regex, logging)
+message_handler = MessageHandler(reddit_client, comment_handler, regex, logging)
 mirror_handler = MirrorHandler(reddit_client, comment_handler, regex, logging)
 oauth_helper = PrawOAuth2Mini(
 	reddit_client, app_key=app_key, app_secret=app_secret,
@@ -46,15 +46,7 @@ def main():
 			if counter % 5 == 0:
 				if message_handler.new_messages():
 					message_handler.forward_messages(user="bestme")
-					message_handler.process_delete_requests()
-
-					for (comment, user) in message_handler.accepted_deletions:
-						comment_handler.delete_comment(comment)
-						message_handler.reply_with_delete_confirmation(user)
-
-					for user in message_handler.denied_deletions:
-						message_handler.reply_with_delete_denial(user)
-
+					message_handler.process_deletion_requests()
 					message_handler.mark_messages_as_read()
 
 			if counter == 1500:

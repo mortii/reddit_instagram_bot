@@ -7,10 +7,10 @@
 *.sublime-workspace
 .cache/
 .env
+venv
 secrets.py
 test.py
 bot_test.py
-venv
 get_tokens.py
 !requirements.txt
 !logging.conf

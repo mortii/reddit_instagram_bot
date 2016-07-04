@@ -12,5 +12,5 @@ def upload_video(video_url):
 def _get_streamable_url(shortcode):
 	response = requests.get('https://api.streamable.com/videos/' + shortcode)
 	dictionary = response.json()
-	streamable_url = "https://www." + dictionary['url']
+	streamable_url = "https://" + dictionary['url']
 	return streamable_url

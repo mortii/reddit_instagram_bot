@@ -89,14 +89,14 @@ class MessageHandler:
 		return False
 
 	def _reply_with_delete_confirmation(self, user):
-		subject = "deleted"
-		body = "the mirror has been deleted"
+		subject = "Mirror deleted"
+		body = "The instagram mirror has been deleted"
 		self._reddit_client.send_message(user, subject, body)
 		self._logger.info("replied with delete confirmation")
 
 	def _reply_with_delete_denial(self, user):
-		subject = "denied"
-		body = "only the user of the original post can request mirror deletion"
+		subject = "Deletion request denied"
+		body = "Only the user of the original post can request mirror deletion."
 		self._reddit_client.send_message(user, subject, body)
 		self._logger.info("replied with delete denial")
 

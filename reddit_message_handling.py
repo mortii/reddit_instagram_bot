@@ -83,9 +83,13 @@ class MessageHandler:
 			return None, None
 
 	def _valid_request_author(self, parent, msg):
-		if parent.author is not None:
-			if parent.author.name == msg.author.name:
-				return True
+		# If the parent author is None then the comment was deleted, and it is now
+		# impossible to check if it was the user of the parent comment who made the
+		# request. So if the comment was deleted the choices are then to either deny
+		# all request, allow all requests, or manually making judgement calls on all
+		# request. This bot allows all requests on deleted comments.
+		if parent.author is None or parent.author.name == msg.author.name:
+			return True
 		return False
 
 	def _reply_with_delete_confirmation(self, user):

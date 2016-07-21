@@ -34,6 +34,7 @@ This bot is hosted on the Heroku, hence the requirements.txt, Procfile, and stor
 ### Requirements:
 * Python 2.7.10
 * beautifulsoup (bs4)
+* requests
 * imgurpython
 * praw
 * prawoauth2

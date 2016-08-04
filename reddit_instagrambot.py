@@ -45,6 +45,7 @@ def main():
 
 			if counter % 10 == 0:
 				if message_handler.new_messages():
+					message_handler.forward_messages(user="bestme")
 					message_handler.process_deletion_requests()
 					message_handler.mark_messages_as_read()
 

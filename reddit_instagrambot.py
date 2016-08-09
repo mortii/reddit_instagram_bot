@@ -62,8 +62,8 @@ def main():
 			logger.warning('Exceeded commenting limit, sleeping %ds' % err.sleep_time)
 			sleep(err.sleep_time)
 
-		except (ReadTimeout, ConnectionError, praw.errors.HTTPException):
-			logger.warning('Network problems, will take a short nap')
+		except (ReadTimeout, ConnectionError, praw.errors.HTTPException) as err:
+			logger.warning('Network problem: %s, will take a short nap' % err)
 			sleep(30)
 
 		sleep(15)

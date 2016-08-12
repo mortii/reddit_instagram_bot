@@ -64,7 +64,7 @@ def main():
 
 		except (ReadTimeout, ConnectionError, praw.errors.HTTPException) as err:
 			logger.warning('Network problem: %s, will take a short nap' % err)
-			sleep(30)
+			sleep(180)
 
 		sleep(15)
 

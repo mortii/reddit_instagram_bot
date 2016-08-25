@@ -43,7 +43,7 @@ def main():
 				mirror_handler.mirror_submissions(subreddit_name)
 				mirror_handler.mirror_comments(subreddit_name)
 
-			if counter % 10 == 0:
+			if counter % 5 == 0:
 				if message_handler.new_messages():
 					message_handler.forward_messages(user="bestme")
 					message_handler.process_deletion_requests()

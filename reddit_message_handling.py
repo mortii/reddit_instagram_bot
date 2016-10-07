@@ -29,6 +29,13 @@ class MessageHandler:
 	def _create_message_body(self, msg):
 		if msg.context != "":
 			msg.context = "[context](%s)" % msg.context
+		else:
+			body_split = msg.body.split()
+			if self._regex.search(r't1_', body_split[1]):
+				comment = self._reddit_client.get_info(thing_id=body_split[1])
+				context = comment.permalink + "?context=10000"
+				msg.context = "[context](%s)" % context
+
 		body = "%s\n\n%s\n\nby /u/%s" % (msg.context, msg.body, msg.author.name)
 		return body
 

@@ -15,11 +15,14 @@ class MirrorHandler:
 	def mirror_submissions(self, subreddit_name):
 		subreddit = self._reddit_client.get_subreddit(subreddit_name)
 		for submission in subreddit.get_new():
-			if submission.id not in self._checked_submissions:
-				has_links, insta_links = self._get_insta_links(submission.url)
-				if has_links and not self._already_replied(submission.comments):
-					self._comment_handler.add_comment(insta_links, submission=submission)
-				self._checked_submissions.add(submission.id)
+			if submission.id in self._checked_submissions:
+				break
+
+			self._checked_submissions.add(submission.id)
+			has_links, insta_links = self._get_insta_links(submission.url)
+
+			if has_links and not self._already_replied(submission.comments):
+				self._comment_handler.add_comment(insta_links, submission=submission)
 
 	def _get_insta_links(self, text):
 		all_insta_links = self._regex_instagram.findall(text)
@@ -55,14 +58,19 @@ class MirrorHandler:
 		return False
 
 	def mirror_comments(self, subreddit_name):
-		for comment in self._reddit_client.get_comments(subreddit_name):
-			if comment.id not in self._checked_comments:
-				if not self._made_by_bot(comment):
-					has_links, insta_links = self._get_insta_links(comment.body)
-					comment.refresh()  # redditAPI returns no replies unless refreshed (bug)
-					if has_links and not self._already_replied(comment.replies):
-						self._comment_handler.add_comment(insta_links, comment=comment)
-				self._checked_comments.add(comment.id)
+		for comment in self._reddit_client.get_comments(subreddit_name, sort=u'new'):
+			if comment.id in self._checked_comments:
+				break
+
+			self._checked_comments.add(comment.id)
+			if self._made_by_bot(comment):
+				break
+
+			has_links, insta_links = self._get_insta_links(comment.body)
+			comment.refresh()  # redditAPI returns no replies unless refreshed (bug)
+
+			if has_links and not self._already_replied(comment.replies):
+				self._comment_handler.add_comment(insta_links, comment=comment)
 
 	def empty_checked_comments(self):
 		self._checked_comments = set()

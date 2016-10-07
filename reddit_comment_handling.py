@@ -37,7 +37,7 @@ class CommentHandler:
 			praw_comment = comment.reply(bot_comment)
 
 		self._logger.info(praw_comment)
-		sleep(2)
+		sleep(5)
 		self._update_footer(praw_comment, body, footer)
 
 	def _create_body(self, insta_links):

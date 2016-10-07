@@ -43,13 +43,13 @@ def main():
 				mirror_handler.mirror_submissions(subreddit_name)
 				mirror_handler.mirror_comments(subreddit_name)
 
-			if counter % 5 == 0:
+			if counter % 3 == 0:
 				if message_handler.new_messages():
 					message_handler.forward_messages(user="bestme")
 					message_handler.process_deletion_requests()
 					message_handler.mark_messages_as_read()
 
-			if counter == 1500:
+			if counter == 150:
 				mirror_handler.empty_checked_comments()
 				mirror_handler.empty_checked_submissions()
 				counter = 0

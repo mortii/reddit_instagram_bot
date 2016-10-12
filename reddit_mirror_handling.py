@@ -67,7 +67,11 @@ class MirrorHandler:
 				break
 
 			has_links, insta_links = self._get_insta_links(comment.body)
-			comment.refresh()  # redditAPI returns no replies unless refreshed (bug)
+
+			try:
+				comment.refresh()  # redditAPI returns no replies unless refreshed (bug)
+			except IndexError:
+				pass
 
 			if has_links and not self._already_replied(comment.replies):
 				self._comment_handler.add_comment(insta_links, comment=comment)

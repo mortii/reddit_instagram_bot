@@ -23,8 +23,9 @@ _SOURCE_CODE = (
 
 
 class CommentHandler:
-	def __init__(self, logging):
+	def __init__(self, logging, bot_account):
 		self._logger = logging.getLogger('commenting')
+		self.bot_account = bot_account
 
 	def add_comment(self, insta_links, submission=None, comment=None):
 		body = self._create_body(insta_links)
@@ -74,6 +75,13 @@ class CommentHandler:
 		# by third parties using various 'undelete' methods
 		permalink = praw_comment.permalink
 		footer = _report_bug.format(permalink=permalink) + _FEEDBACK + _SOURCE_CODE
-		deleted_comment = "[Deleted by OP's request]\n\n***\n\n" + footer
+		deleted_comment = "[Deleted]\n\n***\n\n" + footer
 		praw_comment.edit(deleted_comment)
 		self._logger.info("deleted comment")
+
+	def delete_downvoted_comments(self):
+		bot_comments = self.bot_account.get_comments(sort=u'new', time=u'day')
+		for comment in bot_comments:
+			if comment.score < 0:
+				if (comment.body[:9] != "[Deleted]"):
+					self.delete_comment(comment)

@@ -12,7 +12,6 @@ from reddit_mirror_handling import MirrorHandler
 from reddit_message_handling import MessageHandler
 from reddit_comment_handling import CommentHandler
 
-
 # secret variables stored on Heroku
 user_agent = os.environ['user_agent']
 app_key = os.environ['app_key']
@@ -25,7 +24,8 @@ subreddits = ['MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('root')
 reddit_client = praw.Reddit(user_agent=user_agent)
-comment_handler = CommentHandler(logging)
+bot_account = praw.objects.Redditor(reddit_client, user_name="InstagramMirror")
+comment_handler = CommentHandler(logging, bot_account)
 message_handler = MessageHandler(reddit_client, comment_handler, regex, logging)
 mirror_handler = MirrorHandler(reddit_client, comment_handler, regex, logging)
 oauth_helper = PrawOAuth2Mini(
@@ -48,6 +48,9 @@ def main():
 					message_handler.forward_messages(user="bestme")
 					message_handler.process_deletion_requests()
 					message_handler.mark_messages_as_read()
+
+			if counter % 10 == 0:
+				comment_handler.delete_downvoted_comments()
 
 			if counter == 150:
 				mirror_handler.empty_checked_comments()

@@ -18,7 +18,7 @@ app_key = os.environ['app_key']
 app_secret = os.environ['app_secret']
 access_token = os.environ['access_token']
 refresh_token = os.environ['refresh_token']
-scopes = os.environ['scopes']
+scopes = os.environ['scopes'].split()
 
 subreddits = ['MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
 logging.config.fileConfig("logging.conf")

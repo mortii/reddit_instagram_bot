@@ -20,7 +20,7 @@ access_token = os.environ['access_token']
 refresh_token = os.environ['refresh_token']
 scopes = os.environ['scopes'].split()
 
-subreddits = ['MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
+subreddits = ['test', 'MMA', 'bodybuilding', 'SquaredCircle', 'spacex']
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('root')
 reddit_client = praw.Reddit(user_agent=user_agent)

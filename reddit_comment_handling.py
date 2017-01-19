@@ -15,7 +15,9 @@ _delete = (
 	u" ^| ^[Delete](https://reddit.com/message/compose/?to=InstagramMirror"
 	u"&amp;subject=InstagramMirror%20delete&message="
 	u"delete%20{thing_id}%20\(only%20the%20user%20of%20the%20original"
-	u"%20post%20can%20do%20this\))")
+	u"%20post%20can%20do%20this.%20If%20this%20is%20your%20Instagram"
+	u"%20picture/video%20then%20send%20a%20DM%20to%20redditchecker1245"
+	u"%20on%20Instagram\))")
 
 _SOURCE_CODE = (
 	u" ^| ^[Source Code](https://github.com/mortii/"

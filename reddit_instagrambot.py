@@ -69,7 +69,7 @@ def main():
 			logger.warning('Network problem: %s, will take a short nap' % err)
 			sleep(180)
 
-		sleep(15)
+		sleep(5)
 
 
 if __name__ == '__main__':
